@@ -5,6 +5,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Weather App</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" rel="stylesheet"
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" 
+        crossorigin="anonymous"/>
+        <style>
+            .logo {
+                height: 60px;
+                width: 60px;
+                cursor: pointer;
+            }
+
+            .logo:hover {
+                content: url("/images/logo2.png");
+            }
+
+            i {
+                font-size: 1.3rem;
+            }
+        </style>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -16,22 +34,190 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" aria-current="page" href="#home">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">About This App</a>
+                            <a class="nav-link" href="#extra">Weather of Prominent Cities</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">How to Use?</a>
+                            <a class="nav-link" href="#footer">Footer</a>
                         </li>
                     </ul>
-                    <form class="d-flex" role="search" action="search">
-                        <input class="form-control me-2" type="search" placeholder="Search Any City" aria-label="Search" name="city" required>
+                    <form class="d-flex" role="search" action="/search" method="post">
+                        <input class="form-control me-2" type="search" placeholder="<%= locals.error ? error :  'Search Any City'%>" aria-label="Search" name="city" required>
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
                 </div>
             </div>
         </nav>
+
+        <div class="container py-3">
+            <header id="home">            
+                <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+                    <h1 class="display-4 fw-normal text-body-emphasis">
+                        <% if (locals.city) { %>
+                            Weather for <%= city %> 
+                        <% } else { %>
+                            Weather Forecast for your city!
+                        <% } %>
+                    </h1>
+                </div>
+            </header>
+            
+            <main>
+                <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                    <div class="col">
+                        <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                            <div class="card-header py-3 text-bg-primary border-primary">
+                                <h4 class="my-0 fw-normal">Temperatures</h4>
+                            </div>
+                            <div class="card-body">
+                                <h1 class="card-title pricing-card-title">
+                                    <% if (locals.weather) { %>
+                                        <%= weather.temp %> 
+                                    <% } %>
+                                    <small class="text-body-secondary fw-light">
+                                        &#8451;
+                                    </small>
+                                </h1>
+                                <ul class="list-unstyled mt-3 mb-4">
+                                    <li>Min Temperature
+                                        <% if (locals.weather) { %>
+                                            <%= weather.min_temp %> 
+                                        <% } %> &#8451;</li>
+                                    <li>Max Temperature
+                                        <% if (locals.weather) { %>
+                                            <%= weather.max_temp %> 
+                                        <% } %> &#8451;</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                            <div class="card-header py-3 text-bg-primary border-primary">
+                                <h4 class="my-0 fw-normal">Humidity Info</h4>
+                            </div>
+                            <div class="card-body">
+                                <h1 class="card-title pricing-card-title">
+                                    <% if (locals.weather) { %>
+                                        <%= weather.humidity %> 
+                                    <% } %>
+                                    <small class="text-body-secondary fw-light">
+                                        %
+                                    </small>
+                                </h1>
+                                <ul class="list-unstyled mt-3 mb-4">
+                                    <li>Feels Like
+                                        <% if (locals.weather) { %>
+                                            <%= weather.feels_like %> 
+                                        <% } %> &#8451;</li>
+                                    <li>Cloud PCT
+                                        <% if (locals.weather) { %>
+                                            <%= weather.cloud_pct %> 
+                                        <% } %>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                            <div class="card-header py-3 text-bg-primary border-primary">
+                                <h4 class="my-0 fw-normal">Wind Info</h4>
+                            </div>
+                            <div class="card-body">
+                                <h1 class="card-title pricing-card-title">
+                                    <% if (locals.weather) { %>
+                                        <%= weather.wind_speed %> 
+                                    <% } %>
+                                    <small class="text-body-secondary fw-light">
+                                        km/hr
+                                    </small>
+                                </h1>
+                                <ul class="list-unstyled mt-3 mb-4">
+                                    <li>Wind Degree is
+                                        <% if (locals.weather) { %>
+                                            <%= weather.wind_degrees %> 
+                                        <% } %> </li>
+                                    <li>Wind Speed
+                                        <% if (locals.weather) { %>
+                                            <%= weather.wind_speed %> 
+                                        <% } %>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div id="extra">
+                <h2 class="display-6 text-center mb-4">Weather of Prominent Cities</h2>
+            
+                <div class="table-responsive">
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <th style="width: 8%;"></th>
+                                <th style="width: 12%;">Temp</th>
+                                <th style="width: 12%;">Feels Like</th>
+                                <th style="width: 12%;">Humidity</th>
+                                <th style="width: 12%;">Min Temp</th>
+                                <th style="width: 12%;">Max Temp</th>
+                                <th style="width: 12%;">Wind Speed</th>
+                                <th style="width: 12%;">Wind Degrees</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for( let i = 0; i < cities.length; i++ ) { %>
+                                <tr>
+                                    <th scope="row" class="text-start"><%= cities[i] %></th>
+                                    <td>
+                                        <%= extra[i].temp %>
+                                    </td>
+                                    <td>
+                                        <%= extra[i].feels_like %>
+                                    </td>
+                                    <td>
+                                        <%= extra[i].humidity %>
+                                    </td>
+                                    <td>
+                                        <%= extra[i].min_temp %>
+                                    </td>
+                                    <td>
+                                        <%= extra[i].max_temp %>
+                                    </td>
+                                    <td>
+                                        <%= extra[i].wind_speed %>
+                                    </td>
+                                    <td>
+                                        <%= extra[i].wind_degrees %>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </main>
+        </div>
+
+        <div class="container" id="footer">
+            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                <div class="col-md-4 d-flex align-items-center">
+                    <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+                        <img src="/images/logo.png" alt="logo" class="logo">
+                    </a>
+                    <span class="mb-3 mb-md-0 text-body-secondary">© 2023 Rajat Gupta</span>
+                </div>
+            
+                <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+                    <li class="ms-3"><a class="text-body-secondary" href="mailto:rajatgupta0607@gmail.com" target="_blank"><i class="fas fa-envelope hover"></i></a></li>
+                    <li class="ms-3"><a class="text-body-secondary" href="https://github.com/NightShift0607" target="_blank"><i class="fab fa-github hover"></i></a></li>
+                    <li class="ms-3"><a class="text-body-secondary" href="https://www.linkedin.com/in/rajat-gupta-716a5b28b/" target="_blank"><i class="fab fa-linkedin hover"></i></a></li>
+                </ul>
+            </footer>
+        </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     </body>
